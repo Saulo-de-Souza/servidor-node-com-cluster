@@ -4,7 +4,7 @@ import cluster from 'cluster';
 import { EConsoleLog } from './console-log.enum';
 
 process.on('uncaughtException', (e: Error) => {
-  console.log(`${EConsoleLog.bgBlack}${EConsoleLog.fgRed}Erro${EConsoleLog.reset}`);
+  console.log(`${EConsoleLog.bgBlack}${EConsoleLog.fgRed}Erro: ${EConsoleLog.fgYellow}${e}${EConsoleLog.reset}`);
 });
 process.on('unhandledRejection', () => {
   console.log(`${EConsoleLog.bgBlack}${EConsoleLog.fgRed}Erro${EConsoleLog.reset}`);
@@ -13,7 +13,7 @@ process.on('unhandledRejection', () => {
 const cpusLenght = cpus().length;
 
 if (cluster.isPrimary) {
-  console.log(`${EConsoleLog.fgWhite}${EConsoleLog.bgBlack}Master process ${process.pid} is running${EConsoleLog.reset}`);
+  console.log(`${EConsoleLog.fgBlack}${EConsoleLog.bgWhite}Master process ${process.pid} is running${EConsoleLog.reset}`);
 
   for (let x = 0; x < cpusLenght * 2; x++) {
     cluster.fork();
@@ -38,10 +38,11 @@ if (cluster.isPrimary) {
       }
 
       res.writeHead(200, { 'Content-Type': 'text/html' });
+      console.log(req.url);
       res.end(`Hello World from Worker ${process.pid}\n`);
     })
     .listen(3000)
     .on('listening', () => {
-      console.log(`${EConsoleLog.fgGreen}Worker process start with ${EConsoleLog.fgBlue}${process.pid}${EConsoleLog.reset}`);
+      console.log(`${EConsoleLog.fgGreen}Worker process start with ${EConsoleLog.fgCyan}${process.pid}${EConsoleLog.reset}`);
     });
 }
