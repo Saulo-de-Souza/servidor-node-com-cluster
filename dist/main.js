@@ -90,14 +90,17 @@ else {
                 }
             });
         }
-        if ((_d = req.url) === null || _d === void 0 ? void 0 : _d.match(/products/)) {
-            const urlstring = new url_1.URL(`http://${req.headers.host}${req.url}`);
-            console.log(urlstring.searchParams);
-            res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-            res.end('<p style="color:red;background-color:black;">Página products</p>');
-        }
-        if (req.method === 'POST') {
-            console.log(req.method);
+        if (req.method === 'POST' && ((_d = req.url) === null || _d === void 0 ? void 0 : _d.match(/products/))) {
+            const urlString = new url_1.URL(`http://${req.headers.host}${req.url}`);
+            let body = '';
+            req.on('data', (chunk) => {
+                body += chunk.toString();
+            });
+            req.on('end', () => {
+                console.log(body);
+                // console.log(querystring.parse(body));
+            });
+            res.end('sauuloooooooooooooooooooo');
         }
     })
         .listen(3000)

@@ -1,0 +1,10 @@
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type
+Date: Wed, 26 Jun 2024 19:23:59 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Content-Length: 25
+
+sauuloooooooooooooooooooo

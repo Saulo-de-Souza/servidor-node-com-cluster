@@ -5,6 +5,7 @@ import { EConsoleLog } from './console-log.enum';
 import fs from 'fs';
 import path from 'path';
 import { URL } from 'url';
+import querystring from 'querystring';
 
 process.on('uncaughtException', (e: Error) => {
   console.log(`${EConsoleLog.bgBlack}${EConsoleLog.fgRed}Erro: ${EConsoleLog.fgYellow}${e}${EConsoleLog.reset}`);
@@ -84,15 +85,20 @@ if (cluster.isPrimary) {
         });
       }
 
-      if (req.url?.match(/products/)) {
-        const urlstring = new URL(`http://${req.headers.host}${req.url}`);
-        console.log(urlstring.searchParams);
-        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-        res.end('<p style="color:red;background-color:black;">Página products</p>');
-      }
+      if (req.method === 'POST' && req.url?.match(/products/)) {
+        const urlString = new URL(`http://${req.headers.host}${req.url}`);
+        let body = '';
 
-      if (req.method === 'POST') {
-        console.log(req.method);
+        req.on('data', (chunk) => {
+          body += chunk.toString();
+        });
+
+        req.on('end', () => {
+          console.log(body);
+          // console.log(querystring.parse(body));
+        });
+
+        res.end('sauuloooooooooooooooooooo');
       }
     })
     .listen(3000)
