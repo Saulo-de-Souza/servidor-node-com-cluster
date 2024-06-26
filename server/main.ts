@@ -94,7 +94,7 @@ if (cluster.isPrimary) {
         });
 
         req.on('end', () => {
-          console.log(body);
+          console.log(JSON.parse(body));
           // console.log(querystring.parse(body));
         });
 

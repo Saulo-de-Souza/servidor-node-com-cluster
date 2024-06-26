@@ -97,7 +97,7 @@ else {
                 body += chunk.toString();
             });
             req.on('end', () => {
-                console.log(body);
+                console.log(JSON.parse(body));
                 // console.log(querystring.parse(body));
             });
             res.end('sauuloooooooooooooooooooo');
