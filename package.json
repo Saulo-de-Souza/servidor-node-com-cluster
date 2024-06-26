@@ -7,7 +7,8 @@
   "scripts": {
     "tsc": "tsc -p server/tsconfig.json -w",
     "serve": "node --watch dist/main.js",
-    "git": "git add --all && git commit -m first && git push https://github.com/Saulo-de-Souza/servidor-node-com-cluster.git master"
+    "git": "git add --all && git commit -m first && git push https://github.com/Saulo-de-Souza/servidor-node-com-cluster.git master",
+    "post:products": "curl.exe -X POST http://localhost:3000/products -H 'Content-Type: application.json' -d \"{id: priscilla}\""
   },
   "author": "Saulo de Souza",
   "license": "ISC",

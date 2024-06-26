@@ -90,6 +90,10 @@ if (cluster.isPrimary) {
         res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
         res.end('<p style="color:red;background-color:black;">Página products</p>');
       }
+
+      if (req.method === 'POST') {
+        console.log(req.method);
+      }
     })
     .listen(3000)
     .on('listening', () => {
