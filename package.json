@@ -1,0 +1,17 @@
+{
+  "name": "servidor-com-cluster",
+  "version": "1.0.0",
+  "description": "Servidor node js com cluster",
+  "main": "./dist/main.js",
+  "type": "commonjs",
+  "scripts": {
+    "tsc": "tsc -p server/tsconfig.json -w",
+    "serve": "node --watch dist/main.js",
+    "git": "git add --all && git commit -m first && git push https://github.com/Saulo-de-Souza/servidor-node-com-cluster.git master"
+  },
+  "author": "Saulo de Souza",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.14.9"
+  }
+}
