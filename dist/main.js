@@ -7,6 +7,8 @@ const http_1 = __importDefault(require("http"));
 const os_1 = require("os");
 const cluster_1 = __importDefault(require("cluster"));
 const console_log_enum_1 = require("./console-log.enum");
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
 process.on('uncaughtException', (e) => {
     console.log(`${console_log_enum_1.EConsoleLog.bgBlack}${console_log_enum_1.EConsoleLog.fgRed}Erro: ${console_log_enum_1.EConsoleLog.fgYellow}${e}${console_log_enum_1.EConsoleLog.reset}`);
 });
@@ -28,6 +30,7 @@ if (cluster_1.default.isPrimary) {
 else {
     const server = http_1.default
         .createServer((req, res) => {
+        var _a;
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -36,9 +39,30 @@ else {
             res.end();
             return;
         }
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        console.log(req.url);
-        res.end(`Hello World from Worker ${process.pid}\n`);
+        if (req.url === '/') {
+            fs_1.default.readFile(path_1.default.join(__dirname, '../public/index.html'), (error, content) => {
+                if (error) {
+                    res.writeHead(500);
+                    res.end();
+                }
+                else {
+                    res.writeHead(200, { 'content-type': 'text/html' });
+                    res.end(content, 'utf-8');
+                }
+            });
+        }
+        else if ((_a = req.url) === null || _a === void 0 ? void 0 : _a.match(/.css$/)) {
+            fs_1.default.readFile(path_1.default.join(__dirname, '../public/css/main.css'), (error, content) => {
+                if (error) {
+                    res.writeHead(500);
+                    res.end();
+                }
+                else {
+                    res.writeHead(200, { 'content-type': 'text/css' });
+                    res.end(content, 'utf-8');
+                }
+            });
+        }
     })
         .listen(3000)
         .on('listening', () => {

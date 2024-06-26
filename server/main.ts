@@ -2,6 +2,8 @@ import http from 'http';
 import { cpus } from 'os';
 import cluster from 'cluster';
 import { EConsoleLog } from './console-log.enum';
+import fs from 'fs';
+import path from 'path';
 
 process.on('uncaughtException', (e: Error) => {
   console.log(`${EConsoleLog.bgBlack}${EConsoleLog.fgRed}Erro: ${EConsoleLog.fgYellow}${e}${EConsoleLog.reset}`);
@@ -37,9 +39,27 @@ if (cluster.isPrimary) {
         return;
       }
 
-      res.writeHead(200, { 'Content-Type': 'text/html' });
-      console.log(req.url);
-      res.end(`Hello World from Worker ${process.pid}\n`);
+      if (req.url === '/') {
+        fs.readFile(path.join(__dirname, '../public/index.html'), (error, content) => {
+          if (error) {
+            res.writeHead(500);
+            res.end();
+          } else {
+            res.writeHead(200, { 'content-type': 'text/html' });
+            res.end(content, 'utf-8');
+          }
+        });
+      } else if (req.url?.match(/.css$/)) {
+        fs.readFile(path.join(__dirname, '../public/css/main.css'), (error, content) => {
+          if (error) {
+            res.writeHead(500);
+            res.end();
+          } else {
+            res.writeHead(200, { 'content-type': 'text/css' });
+            res.end(content, 'utf-8');
+          }
+        });
+      }
     })
     .listen(3000)
     .on('listening', () => {
