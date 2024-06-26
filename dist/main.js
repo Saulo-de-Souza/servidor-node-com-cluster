@@ -30,7 +30,7 @@ if (cluster_1.default.isPrimary) {
 else {
     const server = http_1.default
         .createServer((req, res) => {
-        var _a;
+        var _a, _b, _c;
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -52,13 +52,39 @@ else {
             });
         }
         else if ((_a = req.url) === null || _a === void 0 ? void 0 : _a.match(/.css$/)) {
-            fs_1.default.readFile(path_1.default.join(__dirname, '../public/css/main.css'), (error, content) => {
+            fs_1.default.readFile(path_1.default.join(__dirname, '../public/', req.url), (error, content) => {
                 if (error) {
                     res.writeHead(500);
                     res.end();
                 }
                 else {
                     res.writeHead(200, { 'content-type': 'text/css' });
+                    res.end(content, 'utf-8');
+                }
+            });
+        }
+        else if ((_b = req.url) === null || _b === void 0 ? void 0 : _b.match(/.js$/)) {
+            console.log(req.url);
+            fs_1.default.readFile(path_1.default.join(__dirname, '../public', req.url), (error, content) => {
+                if (error) {
+                    res.writeHead(500);
+                    res.end();
+                }
+                else {
+                    res.writeHead(200, { 'content-type': 'text/javascript' });
+                    res.end(content, 'utf-8');
+                }
+            });
+        }
+        else if ((_c = req.url) === null || _c === void 0 ? void 0 : _c.match(/.png$/)) {
+            console.log(req.url);
+            fs_1.default.readFile(path_1.default.join(__dirname, '../public', req.url), (error, content) => {
+                if (error) {
+                    res.writeHead(500);
+                    res.end();
+                }
+                else {
+                    res.writeHead(200, { 'content-type': 'image/png' });
                     res.end(content, 'utf-8');
                 }
             });

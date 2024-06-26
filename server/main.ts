@@ -50,12 +50,34 @@ if (cluster.isPrimary) {
           }
         });
       } else if (req.url?.match(/.css$/)) {
-        fs.readFile(path.join(__dirname, '../public/css/main.css'), (error, content) => {
+        fs.readFile(path.join(__dirname, '../public/', req.url), (error, content) => {
           if (error) {
             res.writeHead(500);
             res.end();
           } else {
             res.writeHead(200, { 'content-type': 'text/css' });
+            res.end(content, 'utf-8');
+          }
+        });
+      } else if (req.url?.match(/.js$/)) {
+        console.log(req.url);
+        fs.readFile(path.join(__dirname, '../public', req.url), (error, content) => {
+          if (error) {
+            res.writeHead(500);
+            res.end();
+          } else {
+            res.writeHead(200, { 'content-type': 'text/javascript' });
+            res.end(content, 'utf-8');
+          }
+        });
+      } else if (req.url?.match(/.png$/)) {
+        console.log(req.url);
+        fs.readFile(path.join(__dirname, '../public', req.url), (error, content) => {
+          if (error) {
+            res.writeHead(500);
+            res.end();
+          } else {
+            res.writeHead(200, { 'content-type': 'image/png' });
             res.end(content, 'utf-8');
           }
         });
