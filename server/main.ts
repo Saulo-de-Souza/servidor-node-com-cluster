@@ -4,6 +4,7 @@ import cluster from 'cluster';
 import { EConsoleLog } from './console-log.enum';
 import fs from 'fs';
 import path from 'path';
+import { URL } from 'url';
 
 process.on('uncaughtException', (e: Error) => {
   console.log(`${EConsoleLog.bgBlack}${EConsoleLog.fgRed}Erro: ${EConsoleLog.fgYellow}${e}${EConsoleLog.reset}`);
@@ -81,6 +82,13 @@ if (cluster.isPrimary) {
             res.end(content, 'utf-8');
           }
         });
+      }
+
+      if (req.url?.match(/products/)) {
+        const urlstring = new URL(`http://${req.headers.host}${req.url}`);
+        console.log(urlstring.searchParams);
+        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+        res.end('<p style="color:red;background-color:black;">Página products</p>');
       }
     })
     .listen(3000)

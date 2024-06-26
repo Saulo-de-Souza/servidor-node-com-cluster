@@ -9,6 +9,7 @@ const cluster_1 = __importDefault(require("cluster"));
 const console_log_enum_1 = require("./console-log.enum");
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
+const url_1 = require("url");
 process.on('uncaughtException', (e) => {
     console.log(`${console_log_enum_1.EConsoleLog.bgBlack}${console_log_enum_1.EConsoleLog.fgRed}Erro: ${console_log_enum_1.EConsoleLog.fgYellow}${e}${console_log_enum_1.EConsoleLog.reset}`);
 });
@@ -30,7 +31,7 @@ if (cluster_1.default.isPrimary) {
 else {
     const server = http_1.default
         .createServer((req, res) => {
-        var _a, _b, _c;
+        var _a, _b, _c, _d;
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -88,6 +89,12 @@ else {
                     res.end(content, 'utf-8');
                 }
             });
+        }
+        if ((_d = req.url) === null || _d === void 0 ? void 0 : _d.match(/products/)) {
+            const urlstring = new url_1.URL(`http://${req.headers.host}${req.url}`);
+            console.log(urlstring.searchParams);
+            res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+            res.end('<p style="color:red;background-color:black;">Página products</p>');
         }
     })
         .listen(3000)
